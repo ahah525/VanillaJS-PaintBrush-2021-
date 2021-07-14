@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d"); // 2d로 context 생성
 canvas.width = 700;
 canvas.height = 700;
 
-// 초기 색상, 두께 설정
+// 캔버스 내 모든 색상, 두께 설정
 ctx.storkeStyle = "#2c2c2c"; // 시작색을 첫번째 색으로 지정
 ctx.lineWidth = 2.5; // 시작 선두께를 range 기본 값(2.5)로 지정
 
@@ -29,7 +29,7 @@ function onMouseMove(event) {
   if (!painting) {
     // path = 선
     ctx.beginPath(); //path 생성
-    ctx.moveTo(x, y); // (x, y)에서
+    ctx.moveTo(x, y); // (x, y)로 paht를 옮김
   } else {
     // 마우스를 누른 상태에서 캔버스 내에 움직일 때
     ctx.lineTo(x, y); // (x,y)까지 직선을 그림
