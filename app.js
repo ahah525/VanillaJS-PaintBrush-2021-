@@ -4,12 +4,16 @@ const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 
+const INITIAL_COLOR = "#2c2c2c"; // default 색
+const CANVAS_SIZE = 700; // canvas 사이즈
+
 // canvas width, height 지정
-canvas.width = 700;
-canvas.height = 700;
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
 
 // 캔버스 내 모든 색상, 두께 설정
-ctx.storkeStyle = "#2c2c2c"; // 시작색을 첫번째 색으로 지정
+ctx.strokeStyle = INITIAL_COLOR; // 시작색을 첫번째 색으로 지정
+ctx.fillStyle = INITIAL_COLOR; // 색칠할 색 지정
 ctx.lineWidth = 2.5; // 시작 선두께를 range 기본 값(2.5)로 지정
 
 let painting = false; // painting 상태(여부)
@@ -51,8 +55,20 @@ function onMouseUp(event) {
 
 function handleColorClick(event) {
   // 버튼 클릭시, 해당 색상으로 변경
-  ctx.strokeStyle = event.target.style.backgroundColor;
+  const color = event.target.style.backgroundColor;
+
+  ctx.strokeStyle = color; // 선 색 지정
+  ctx.fillStyle = color; // 색칠할 색 지정
   //console.log(event);
+}
+
+function handleCanvasClick(event) {
+  // 캔버스 클릭 시, fill 모드면 해당 색상으로 채우기
+  if (filling) {
+    // fillRect(x, y, width, height)
+    ctx.fillRect(0, 0, canvas.width, canvas.height); // (0, 0)에서 width, height 만큼 색칠
+    //canvas.style.backgroundColor = ctx.fillStyle;
+  }
 }
 
 // 캔버스 존재 여부 검사
@@ -61,6 +77,7 @@ if (canvas) {
   canvas.addEventListener("mousedown", startPainting); // 마우스를 떼지 않고 클릭할 때
   canvas.addEventListener("mouseup", stopPainting); // 마우스를 떼었을 때
   canvas.addEventListener("mouseleave", stopPainting); // 마우스 캔버스 벗어났을 때
+  canvas.addEventListener("click", handleCanvasClick); // 캔버스 클릭했을 때
 }
 
 // Array.from(object): object->Array 생성
