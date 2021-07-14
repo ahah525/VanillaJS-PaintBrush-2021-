@@ -1,7 +1,8 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d"); // 2d로 context 생성
-
 const colors = document.getElementsByClassName("jsColor");
+const range = document.getElementById("jsRange");
+const mode = document.getElementById("jsMode");
 
 // canvas width, height 지정
 canvas.width = 700;
@@ -12,7 +13,7 @@ ctx.storkeStyle = "#2c2c2c"; // 시작색을 첫번째 색으로 지정
 ctx.lineWidth = 2.5; // 시작 선두께를 range 기본 값(2.5)로 지정
 
 let painting = false; // painting 상태(여부)
-
+let filling = false; // default painting 상태
 function stopPainting() {
   painting = false;
 }
@@ -65,7 +66,37 @@ if (canvas) {
 // Array.from(object): object->Array 생성
 //console.log(Array.from(colors));
 
-// 각 색상 버튼 click evnet 설정
-Array.from(colors).forEach((color) =>
-  color.addEventListener("click", handleColorClick)
-);
+if (colors) {
+  // 각 색상 버튼 click evnet 설정
+  Array.from(colors).forEach((color) =>
+    color.addEventListener("click", handleColorClick)
+  );
+}
+
+function handleRangeChange(event) {
+  // input 들어오면 선 두께 변경
+  ctx.lineWidth = event.target.value;
+  //console.log(event.target.value);
+}
+
+function handleModeClick(event) {
+  // 버튼 toggle 시키기
+  if (filling === true) {
+    // paint 모드로 바꾸고 Fill 버튼으로 바꾸기
+    filling = false;
+    mode.innerText = "Fill";
+  } else {
+    // Fill 모드로 바꾸고 Paint 버튼으로 바꾸기
+    filling = true;
+    mode.innerText = "Paint";
+  }
+}
+if (range) {
+  // range(선 두께) input event 설정
+  range.addEventListener("input", handleRangeChange);
+}
+
+if (mode) {
+  // mode click event 설정
+  mode.addEventListener("click", handleModeClick);
+}
